@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -42,20 +43,57 @@ namespace Ekz_WPF
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
             if (!(sender is Button))
+            {
                 return;
+            }
+
+            _board.RefreshBackGround();
 
             Button btn = (Button)sender;
 
             var point = new Point();
             point = _board.ButtonIsClick(btn);
 
-            if (_board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
-                return;
-            else
+            if (_board.IsChek == false)
             {
-                _board.RefreshBackGround();
+                if (_board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
+                {
+                    _board.IsChek = false;
 
-                btn.Background = Brushes.Aqua;
+                    return;
+                }
+                else
+                {
+                    btn.Background = Brushes.Aqua;
+                    _board.IsChek = true;
+                    _board.CurrentPoint = point;
+
+                    _board.listRules = _board.Fields[(int)point.X, (int)point.Y].FigurBase.Rules(_board.Fields, _board.Buttons, point)
+                       .Where(c => (c.X < _board._size && c.Y < _board._size) && (c.X >= 0 && c.Y >= 0))
+                       .Select(c => c).ToList();
+
+                    foreach (var item in _board.listRules)
+                    {
+                        _board.Buttons[(int)item.X, (int)item.Y].BorderThickness = new Thickness(5);
+                        _board.Buttons[(int)item.X, (int)item.Y].BorderBrush = Brushes.Yellow;
+                    }
+                }
+            }
+            else if (_board.IsChek == true)
+            {
+                foreach (var item in _board.listRules)
+                {
+                    if (item == point)
+                    {
+                        _board.Fields[(int)item.X, (int)item.Y].FigurBase = _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase;
+                        _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase = null;
+
+                        _board.Buttons[(int)item.X, (int)item.Y].Content = _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content;
+                        _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content = null;
+
+                        _board.IsChek = false;
+                    }
+                }
             }
         }
 

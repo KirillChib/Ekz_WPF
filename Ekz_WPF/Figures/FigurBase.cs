@@ -16,11 +16,10 @@ namespace Ekz_WPF
             ColorFigure = colorFigure;
         }
 
-        public Dictionary<int, int> Rules(Field[] fields , Button[] buttons, Point point)
+        public virtual IEnumerable<Point> Rules(Field[,] fields, Button[,] buttons, Point point)
         {
-            var toGo = new Dictionary<int, int>();
-
-            return toGo;
+            return new List<Point>();
         }
+      
     }
 }

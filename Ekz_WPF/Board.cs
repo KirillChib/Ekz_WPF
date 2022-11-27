@@ -8,9 +8,13 @@ namespace Ekz_WPF
     internal class Board
     {
         public readonly int _size = 8;
+        public List<Point> listRules = new List<Point>();
+        public Point CurrentPoint { get; set; } 
+        public bool IsChek { get; set; }
         private Field[,] _fields;
         private Button[,] _buttons;
         private LoadImages images = new LoadImages();
+
 
         public Button[,] Buttons { get => _buttons; set => _buttons = value; }
         internal Field[,] Fields { get => _fields; set => _fields = value; }
@@ -19,6 +23,7 @@ namespace Ekz_WPF
         {
             _fields = new Field[_size, _size];
             _buttons = new Button[_size, _size];
+            IsChek = false;
 
             CreatedBoard();
         }
@@ -139,6 +144,7 @@ namespace Ekz_WPF
             {
                 for (int j = 0; j < _size; j++)
                 {
+                    Buttons[i, j].BorderThickness = new Thickness(0, 0, 0, 0);
                    Buttons[i, j].Background = (i + j) % 2 != 0 ? Brushes.IndianRed : Brushes.Bisque;
                 }
             }
