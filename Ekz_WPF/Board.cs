@@ -9,15 +9,16 @@ namespace Ekz_WPF
     {
         public readonly int _size = 8;
         public List<Point> listRules = new List<Point>();
-        public Point CurrentPoint { get; set; } 
+        public Point CurrentPoint { get; set; }
         public bool IsChek { get; set; }
+        private ColorOfFigure player = ColorOfFigure.White;
         private Field[,] _fields;
         private Button[,] _buttons;
         private LoadImages images = new LoadImages();
 
-
         public Button[,] Buttons { get => _buttons; set => _buttons = value; }
         internal Field[,] Fields { get => _fields; set => _fields = value; }
+        internal ColorOfFigure Player { get => player; set => player = value; }
 
         public Board()
         {
@@ -138,6 +139,7 @@ namespace Ekz_WPF
             _fields[6, 7].FigurBase = new Pawn(images.WhitePawn7, ColorOfFigure.White);
             _buttons[6, 7].Content = images.WhitePawn7;
         }
+
         public void RefreshBackGround()
         {
             for (int i = 0; i < _size; i++)
@@ -145,7 +147,7 @@ namespace Ekz_WPF
                 for (int j = 0; j < _size; j++)
                 {
                     Buttons[i, j].BorderThickness = new Thickness(0, 0, 0, 0);
-                   Buttons[i, j].Background = (i + j) % 2 != 0 ? Brushes.IndianRed : Brushes.Bisque;
+                    Buttons[i, j].Background = (i + j) % 2 != 0 ? Brushes.IndianRed : Brushes.Bisque;
                 }
             }
         }

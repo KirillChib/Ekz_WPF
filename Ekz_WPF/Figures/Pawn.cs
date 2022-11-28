@@ -38,9 +38,9 @@ namespace Ekz_WPF
 
             if (ColorFigure == ColorOfFigure.Black)
             {
-                if ((fields[indexRowDown,(int) point.Y].FigurBase == null || (fields[indexRowDown + 1, (int)point.Y].FigurBase == null )))
+                if ( fields[indexRowDown,(int) point.Y].FigurBase == null  )
                 {
-                    if (point.X == 1)
+                    if (point.X == 1 && fields[indexRowDown + 1, (int)point.Y].FigurBase == null)
                     {
                         yield return new Point(indexRowDown, point.Y);
                         yield return new Point(indexRowDown + 1, point.Y);
@@ -52,16 +52,41 @@ namespace Ekz_WPF
 
                     }
                 }
+
+                 if(fields[indexRowDown, (int)point.Y + 1].FigurBase != null && fields[indexRowDown , (int)point.Y + 1].FigurBase.ColorFigure == ColorOfFigure.White)
+                {
+                    yield return new Point(indexRowDown, (int)point.Y + 1);
+                }
+
+                if (fields[indexRowDown, (int)point.Y - 1].FigurBase != null && fields[indexRowDown , (int)point.Y - 1].FigurBase.ColorFigure == ColorOfFigure.White)
+                {
+                    yield return new Point(indexRowDown , (int)point.Y - 1);
+                }
+
             }
             else if (ColorFigure == ColorOfFigure.White)
             {
-                if (point.X == size - 2)
+                if (fields[indexRowUp, (int)point.Y].FigurBase == null)
                 {
-                    yield return new Point(indexRowUp, point.Y);
-                    yield return new Point(indexRowUp - 1, point.Y);
+                    if (point.X == size - 2 && fields[indexRowUp - 1, (int)point.Y].FigurBase == null)
+                    {
+                        yield return new Point(indexRowUp, point.Y);
+                        yield return new Point(indexRowUp - 1, point.Y);
+                    }
+                    else
+                        yield return new Point(indexRowUp, point.Y);
                 }
-                else
-                    yield return new Point(indexRowUp, point.Y);
+
+                if (fields[indexRowUp, (int)point.Y + 1].FigurBase != null && fields[indexRowUp , (int)point.Y + 1].FigurBase.ColorFigure == ColorOfFigure.Black)
+                {
+                    yield return new Point(indexRowUp , (int)point.Y + 1);
+                }
+
+                if (fields[indexRowUp, (int)point.Y - 1].FigurBase != null && fields[indexRowUp, (int)point.Y - 1].FigurBase.ColorFigure == ColorOfFigure.Black)
+                {
+                    yield return new Point(indexRowUp, (int)point.Y - 1);
+                }
+
             }
         }
     }
