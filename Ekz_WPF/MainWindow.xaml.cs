@@ -75,7 +75,7 @@ namespace Ekz_WPF
                         foreach (var item in _board.listRules)
                         {
                             if ((_board.Fields[(int)item.X, (int)item.Y].FigurBase != null) &&
-                                (_board.Fields[(int)item.X, (int)item.Y].FigurBase.ColorFigure == _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure))
+                                (_board.Fields[(int)item.X, (int)item.Y].FigurBase.ColorFigure == ColorOfFigure.White))
                             {
                                 continue;
                             }
@@ -98,7 +98,8 @@ namespace Ekz_WPF
                     {
                         if (item == point)
                         {
-                            if (_board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black)
+                            if ((_board.Fields[(int)point.X, (int)point.Y].FigurBase != null && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black) ||
+                                _board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
                             {
                                 _board.Fields[(int)item.X, (int)item.Y].FigurBase = _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase;
                                 _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase = null;
@@ -137,7 +138,7 @@ namespace Ekz_WPF
                         foreach (var item in _board.listRules)
                         {
                             if ((_board.Fields[(int)item.X, (int)item.Y].FigurBase != null) &&
-                                (_board.Fields[(int)item.X, (int)item.Y].FigurBase.ColorFigure == _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure))
+                                (_board.Fields[(int)item.X, (int)item.Y].FigurBase.ColorFigure == ColorOfFigure.Black))
                             {
                                 continue;
                             }
@@ -160,7 +161,8 @@ namespace Ekz_WPF
                     {
                         if (item == point)
                         {
-                            if (_board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.White)
+                            if ((_board.Fields[(int)point.X, (int)point.Y].FigurBase != null && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.White) ||
+                                _board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
                             {
                                 _board.Fields[(int)item.X, (int)item.Y].FigurBase = _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase;
                                 _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase = null;
