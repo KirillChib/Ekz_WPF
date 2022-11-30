@@ -53,12 +53,12 @@ namespace Ekz_WPF
                     }
                 }
 
-                 if(fields[indexRowDown, (int)point.Y + 1].FigurBase != null && fields[indexRowDown , (int)point.Y + 1].FigurBase.ColorFigure == ColorOfFigure.White)
+                 if((point.Y + 1) < size && fields[indexRowDown, (int)point.Y + 1].FigurBase != null && fields[indexRowDown , (int)point.Y + 1].FigurBase.ColorFigure == ColorOfFigure.White)
                 {
                     yield return new Point(indexRowDown, (int)point.Y + 1);
                 }
 
-                if (fields[indexRowDown, (int)point.Y - 1].FigurBase != null && fields[indexRowDown , (int)point.Y - 1].FigurBase.ColorFigure == ColorOfFigure.White)
+                if ((point.Y - 1) >= 0 && fields[indexRowDown, (int)point.Y - 1].FigurBase != null && fields[indexRowDown , (int)point.Y - 1].FigurBase.ColorFigure == ColorOfFigure.White)
                 {
                     yield return new Point(indexRowDown , (int)point.Y - 1);
                 }
@@ -77,12 +77,12 @@ namespace Ekz_WPF
                         yield return new Point(indexRowUp, point.Y);
                 }
 
-                if (fields[indexRowUp, (int)point.Y + 1].FigurBase != null && fields[indexRowUp , (int)point.Y + 1].FigurBase.ColorFigure == ColorOfFigure.Black)
+                if ((point.Y + 1) < size && fields[indexRowUp, (int)point.Y + 1].FigurBase != null && fields[indexRowUp , (int)point.Y + 1].FigurBase.ColorFigure == ColorOfFigure.Black)
                 {
                     yield return new Point(indexRowUp , (int)point.Y + 1);
                 }
 
-                if (fields[indexRowUp, (int)point.Y - 1].FigurBase != null && fields[indexRowUp, (int)point.Y - 1].FigurBase.ColorFigure == ColorOfFigure.Black)
+                if ((point.Y - 1) >= 0 && fields[indexRowUp, (int)point.Y - 1].FigurBase != null && fields[indexRowUp, (int)point.Y - 1].FigurBase.ColorFigure == ColorOfFigure.Black)
                 {
                     yield return new Point(indexRowUp, (int)point.Y - 1);
                 }

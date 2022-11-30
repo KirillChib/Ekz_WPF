@@ -72,6 +72,8 @@ namespace Ekz_WPF
                            .Where(c => (c.X < _board._size && c.Y < _board._size) && (c.X >= 0 && c.Y >= 0))
                            .Select(c => new Point(c.X, c.Y)).ToList();
 
+                        _board.ForCheckChessOrMate.Add(_board.Fields[(int)point.X, (int)point.Y].FigurBase, _board.listRules);
+
                         foreach (var item in _board.listRules)
                         {
                             if ((_board.Fields[(int)item.X, (int)item.Y].FigurBase != null) &&
@@ -98,6 +100,10 @@ namespace Ekz_WPF
                     {
                         if (item == point)
                         {
+                            if (_board.Fields[(int)point.X, (int)point.Y].FigurBase is King king)
+                            {
+                                king.CurrentField = point;
+                            }
                             if ((_board.Fields[(int)point.X, (int)point.Y].FigurBase != null && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black) ||
                                 _board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
                             {
@@ -110,14 +116,32 @@ namespace Ekz_WPF
                                 _board.IsChek = false;
 
                                 _board.Player = ColorOfFigure.Black;
+
+                                foreach (var it in _board.Fields)
+                                {
+                                    if (it.FigurBase is King k && k.ColorFigure == ColorOfFigure.Black)
+                                    {
+                                        if (k.CheckMate(_board.ForCheckChessOrMate, k.Rules(_board.Fields, _board.Buttons, k.CurrentField).ToList()))
+                                        {
+                                            MessageBox.Show("Черным мат!");
+                                            break;
+                                        }
+                                        else if (k.CheckChess(_board.ForCheckChessOrMate))
+                                        {
+                                            MessageBox.Show("Черным шах!");
+                                            break;
+                                        }
+                                    }
+                                }
                                 return;
                             }
+
+                            _board.IsChek = false;
                         }
                     }
-                    _board.IsChek = false;
                 }
             }
-            else // если ход  игрока за черными фигурами
+            else if (_board.Player == ColorOfFigure.Black) // если ход  игрока за черными фигурами
             {
                 if (_board.IsChek == false)
                 {
@@ -164,6 +188,10 @@ namespace Ekz_WPF
                             if ((_board.Fields[(int)point.X, (int)point.Y].FigurBase != null && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.White) ||
                                 _board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
                             {
+                                if (_board.Fields[(int)point.X, (int)point.Y].FigurBase is King king)
+                                {
+                                    king.CurrentField = point;
+                                }
                                 _board.Fields[(int)item.X, (int)item.Y].FigurBase = _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase;
                                 _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase = null;
 
@@ -173,6 +201,23 @@ namespace Ekz_WPF
                                 _board.IsChek = false;
 
                                 _board.Player = ColorOfFigure.White;
+
+                                foreach (var it in _board.Fields)
+                                {
+                                    if (it.FigurBase is King k && k.ColorFigure == ColorOfFigure.White)
+                                    {
+                                        if (k.CheckMate(_board.ForCheckChessOrMate, k.Rules(_board.Fields, _board.Buttons, k.CurrentField).ToList()))
+                                        {
+                                            MessageBox.Show("Белым мат!");
+                                            break;
+                                        }
+                                        else if (k.CheckChess(_board.ForCheckChessOrMate))
+                                        {
+                                            MessageBox.Show("Белым шах!");
+                                            break;
+                                        }
+                                    }
+                                }
                                 return;
                             }
                         }

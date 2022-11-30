@@ -10,20 +10,26 @@ namespace Ekz_WPF
         public readonly int _size = 8;
         public List<Point> listRules = new List<Point>();
         public Point CurrentPoint { get; set; }
+
+        private Dictionary<FigurBase, List<Point>> forCheckChessOrMate;
         public bool IsChek { get; set; }
         private ColorOfFigure player = ColorOfFigure.White;
         private Field[,] _fields;
         private Button[,] _buttons;
-        private LoadImages images = new LoadImages();
+        private LoadImages images;
 
         public Button[,] Buttons { get => _buttons; set => _buttons = value; }
         internal Field[,] Fields { get => _fields; set => _fields = value; }
         internal ColorOfFigure Player { get => player; set => player = value; }
+        internal Dictionary<FigurBase, List<Point>> ForCheckChessOrMate { get => forCheckChessOrMate; set => forCheckChessOrMate = value; }
 
         public Board()
         {
+            images = new LoadImages();
             _fields = new Field[_size, _size];
             _buttons = new Button[_size, _size];
+            forCheckChessOrMate = new Dictionary<FigurBase, List<Point>>();
+
             IsChek = false;
 
             CreatedBoard();
@@ -55,7 +61,7 @@ namespace Ekz_WPF
             _fields[0, 3].FigurBase = new Queen(images.BlackQueen, ColorOfFigure.Black);
             _buttons[0, 3].Content = images.BlackQueen;
 
-            _fields[0, 4].FigurBase = new King(images.BlackKing, ColorOfFigure.Black);
+            _fields[0, 4].FigurBase = new King(images.BlackKing, ColorOfFigure.Black) { CurrentField = new Point(0, 4) };
             _buttons[0, 4].Content = images.BlackKing;
 
             _fields[0, 5].FigurBase = new Bishop(images.BlackBishop1, ColorOfFigure.Black);
@@ -103,7 +109,7 @@ namespace Ekz_WPF
             _fields[7, 3].FigurBase = new Queen(images.WhiteQueen, ColorOfFigure.White);
             _buttons[7, 3].Content = images.WhiteQueen;
 
-            _fields[7, 4].FigurBase = new King(images.WhiteKing, ColorOfFigure.White);
+            _fields[7, 4].FigurBase = new King(images.WhiteKing, ColorOfFigure.White) { CurrentField = new Point(7, 4) };
             _buttons[7, 4].Content = images.WhiteKing;
 
             _fields[7, 5].FigurBase = new Bishop(images.WhiteBishop1, ColorOfFigure.White);

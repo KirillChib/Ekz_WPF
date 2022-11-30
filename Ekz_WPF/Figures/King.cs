@@ -6,6 +6,8 @@ namespace Ekz_WPF
 {
     internal class King : FigurBase
     {
+        public Point CurrentField { get; set; }
+
         public King(Image icon, ColorOfFigure colorFigure) : base(icon, colorFigure)
         {
         }
@@ -40,8 +42,8 @@ namespace Ekz_WPF
             int j = indexColDown;
             for (int i = indexRowDown; i < size; i++)
             {
-                if (fields[i , j ].FigurBase == null || fields[i, j].FigurBase.ColorFigure != this.ColorFigure)
-                yield return new Point(i, j);
+                if (fields[i, j].FigurBase == null || fields[i, j].FigurBase.ColorFigure != this.ColorFigure)
+                    yield return new Point(i, j);
 
                 break;
             }
@@ -62,7 +64,6 @@ namespace Ekz_WPF
                 if (fields[i, j].FigurBase == null || fields[i, j].FigurBase.ColorFigure != this.ColorFigure)
                     yield return new Point(i, j);
                 break;
-
             }
 
             //Расчет хода по диагонали вверх - влево
@@ -78,17 +79,16 @@ namespace Ekz_WPF
             //Ход Вверх
             for (int i = indexRowUp; i >= 0; i--)
             {
-                if (fields[i, (int)point.Y].FigurBase == null || fields[i,(int) point.Y].FigurBase.ColorFigure != this.ColorFigure)
+                if (fields[i, (int)point.Y].FigurBase == null || fields[i, (int)point.Y].FigurBase.ColorFigure != this.ColorFigure)
                     yield return new Point(i, point.Y);
                 break;
             }
             //Ход Вниз
             for (int i = indexRowDown; i < size; i++)
             {
-                if (fields[i,(int) point.Y].FigurBase == null || fields[i,(int) point.Y].FigurBase.ColorFigure != this.ColorFigure)
+                if (fields[i, (int)point.Y].FigurBase == null || fields[i, (int)point.Y].FigurBase.ColorFigure != this.ColorFigure)
                     yield return new Point(i, point.Y);
                 break;
-
             }
             //Ход Влево
             for (int i = indexColUp; i >= 0; i--)
@@ -104,7 +104,46 @@ namespace Ekz_WPF
                     yield return new Point(point.X, i);
                 break;
             }
-           
+        }
+
+        public bool CheckChess(Dictionary<FigurBase, List<Point>> points)
+        {
+            var list = new List<Point>();
+            foreach (var item in points)
+            {
+                foreach (var it in points.Values)
+                    list = it;
+                foreach (var it in list)
+                {
+                    if (it == CurrentField)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public bool CheckMate(Dictionary<FigurBase, List<Point>> points, List<Point> rules)
+        {
+            var list = new List<Point>();
+            foreach (var item in points)
+            {
+                foreach (var it in points.Values)
+                    list = it;
+                foreach (var it in list)
+                {
+                    foreach(var i in rules)
+                    {
+                        if (i != it)
+                        {
+                            return false;
+                        }
+                    }
+                    
+                }
+            }
+            return true; ;
         }
     }
 }
