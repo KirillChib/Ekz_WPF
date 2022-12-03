@@ -39,34 +39,60 @@ namespace Ekz_WPF
             //Ход Вверх
             for (int i = indexRowUp; i >= 0; i--)
             {
-                if (fields[i,(int) point.Y].FigurBase == null || (fields[i, (int)point.Y].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, (int)point.Y].FigurBase == null)
+                {
                     yield return new Point(i, point.Y);
-                else
+                }
+                else if (fields[i, (int)point.Y].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(i, point.Y);
                     break;
-
+                }
+                else if(fields[i, (int)point.Y].FigurBase.ColorFigure == this.ColorFigure)
+                    break;
             }
             //Ход Вниз
-            for(int i = indexRowDown; i < size; i++)
+            for (int i = indexRowDown; i < size; i++)
             {
-                if (fields[i, (int)point.Y].FigurBase == null || (fields[i, (int)point.Y].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, (int)point.Y].FigurBase == null)
+                {
                     yield return new Point(i, point.Y);
-                else
+                }
+                else if (fields[i, (int)point.Y].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(i, point.Y);
+                    break;
+                }
+                else if (fields[i , (int)point.Y].FigurBase.ColorFigure == this.ColorFigure)
                     break;
             }
             //Ход Влево
-            for(int i =indexColLeft; i >= 0;i--)
+            for (int i = indexColLeft; i >= 0; i--)
             {
-                if (fields[ (int)point.X , i ].FigurBase == null || (fields[(int)point.X , i ].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[(int)point.X, i].FigurBase == null)
+                {
                     yield return new Point(point.X, i);
-                else
+                }
+                else if (fields[(int)point.X, i].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(point.X, i);
+                }
+                else if (fields[(int)point.X , i].FigurBase.ColorFigure == this.ColorFigure)
                     break;
             }
-            //Ход Вправо 
+            //Ход Вправо
             for (int i = indexColRight; i < size; i++)
             {
-                if (fields[(int)point.X, i].FigurBase == null || (fields[(int)point.X, i].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[(int)point.X, i].FigurBase == null)
+                {
                     yield return new Point(point.X, i);
-                else
+                }
+                else if (fields[(int)point.X, i].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(point.X, i);
+                    break;
+                }
+                else if(fields[(int)point.X, i].FigurBase.ColorFigure == this.ColorFigure)
                     break;
             }
         }

@@ -72,7 +72,29 @@ namespace Ekz_WPF
                            .Where(c => (c.X < _board._size && c.Y < _board._size) && (c.X >= 0 && c.Y >= 0))
                            .Select(c => new Point(c.X, c.Y)).ToList();
 
-                        _board.ForCheckChessOrMate.Add(_board.Fields[(int)point.X, (int)point.Y].FigurBase, _board.listRules);
+                        //if (_board.ForCheckChessOrMate.Count == 0)
+                        //{
+                        //    _board.ForCheckChessOrMate.Add(_board.Fields[(int)point.X, (int)point.Y].FigurBase, _board.listRules);
+                        //}
+                        //else
+                        //{
+                        //    bool check = false;
+
+                        //    foreach(var item in _board.ForCheckChessOrMate)
+                        //    {
+                        //        if(_board.Fields[(int)point.X, (int)point.Y].FigurBase == item.Key)
+                        //        {
+                        //            item.Value = _board.listRules;
+                        //            check = true;
+                        //            break;
+                        //        }
+                        //    }
+                        //    if(check == false)
+                        //    {
+                        //        _board.ForCheckChessOrMate.Add(_board.Fields[(int)point.X, (int)point.Y].FigurBase, _board.listRules);
+                        //    }
+                        //    //_board.ForCheckChessOrMate.Add(_board.Fields[(int)point.X, (int)point.Y].FigurBase, _board.listRules);
+                        //}
 
                         foreach (var item in _board.listRules)
                         {
@@ -82,7 +104,7 @@ namespace Ekz_WPF
                                 continue;
                             }
 
-                            _board.Buttons[(int)item.X, (int)item.Y].BorderThickness = new Thickness(5);
+                            _board.Buttons[(int)item.X, (int)item.Y].BorderThickness = new Thickness(3);
                             _board.Buttons[(int)item.X, (int)item.Y].BorderBrush = Brushes.Purple;
                         }
 
@@ -91,11 +113,6 @@ namespace Ekz_WPF
                 }
                 else if (_board.IsChek == true)
                 {
-                    //if (_board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
-                    //{
-                    //    _board.IsChek = false;
-                    //    return;
-                    //}
                     foreach (var item in _board.listRules)
                     {
                         if (item == point)
@@ -104,6 +121,7 @@ namespace Ekz_WPF
                             {
                                 king.CurrentField = point;
                             }
+
                             if ((_board.Fields[(int)point.X, (int)point.Y].FigurBase != null && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black) ||
                                 _board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
                             {
@@ -117,28 +135,28 @@ namespace Ekz_WPF
 
                                 _board.Player = ColorOfFigure.Black;
 
-                                foreach (var it in _board.Fields)
-                                {
-                                    if (it.FigurBase is King k && k.ColorFigure == ColorOfFigure.Black)
-                                    {
-                                        if (k.CheckMate(_board.ForCheckChessOrMate, k.Rules(_board.Fields, _board.Buttons, k.CurrentField).ToList()))
-                                        {
-                                            MessageBox.Show("Черным мат!");
-                                            break;
-                                        }
-                                        else if (k.CheckChess(_board.ForCheckChessOrMate))
-                                        {
-                                            MessageBox.Show("Черным шах!");
-                                            break;
-                                        }
-                                    }
-                                }
+                                //foreach (var it in _board.Fields)
+                                //{
+                                //    if (it.FigurBase is King k && k.ColorFigure == ColorOfFigure.Black)
+                                //    {
+                                //        if (k.CheckMate(_board.ForCheckChessOrMate, k.Rules(_board.Fields, _board.Buttons, k.CurrentField).ToList()))
+                                //        {
+                                //            MessageBox.Show("Черным мат!");
+                                //            break;
+                                //        }
+                                //        else if (k.CheckChess(_board.ForCheckChessOrMate))
+                                //        {
+                                //            MessageBox.Show("Черным шах!");
+                                //            break;
+                                //        }
+                                //    }
+                                //}
                                 return;
                             }
-
-                            _board.IsChek = false;
                         }
                     }
+                    _board.IsChek = false;
+                    return;
                 }
             }
             else if (_board.Player == ColorOfFigure.Black) // если ход  игрока за черными фигурами
@@ -167,7 +185,7 @@ namespace Ekz_WPF
                                 continue;
                             }
 
-                            _board.Buttons[(int)item.X, (int)item.Y].BorderThickness = new Thickness(5);
+                            _board.Buttons[(int)item.X, (int)item.Y].BorderThickness = new Thickness(3);
                             _board.Buttons[(int)item.X, (int)item.Y].BorderBrush = Brushes.Purple;
                         }
 
@@ -176,11 +194,6 @@ namespace Ekz_WPF
                 }
                 else if (_board.IsChek == true)
                 {
-                    //if (_board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
-                    //{
-                    //    _board.IsChek = false;
-                    //    return;
-                    //}
                     foreach (var item in _board.listRules)
                     {
                         if (item == point)
@@ -201,24 +214,24 @@ namespace Ekz_WPF
                                 _board.IsChek = false;
 
                                 _board.Player = ColorOfFigure.White;
-
-                                foreach (var it in _board.Fields)
-                                {
-                                    if (it.FigurBase is King k && k.ColorFigure == ColorOfFigure.White)
-                                    {
-                                        if (k.CheckMate(_board.ForCheckChessOrMate, k.Rules(_board.Fields, _board.Buttons, k.CurrentField).ToList()))
-                                        {
-                                            MessageBox.Show("Белым мат!");
-                                            break;
-                                        }
-                                        else if (k.CheckChess(_board.ForCheckChessOrMate))
-                                        {
-                                            MessageBox.Show("Белым шах!");
-                                            break;
-                                        }
-                                    }
-                                }
                                 return;
+
+                                //foreach (var it in _board.Fields)
+                                //{
+                                //    if (it.FigurBase is King k && k.ColorFigure == ColorOfFigure.White)
+                                //    {
+                                //        if (k.CheckMate(_board.ForCheckChessOrMate, k.Rules(_board.Fields, _board.Buttons, k.CurrentField).ToList()))
+                                //        {
+                                //            MessageBox.Show("Белым мат!");
+                                //            break;
+                                //        }
+                                //        else if (k.CheckChess(_board.ForCheckChessOrMate))
+                                //        {
+                                //            MessageBox.Show("Белым шах!");
+                                //            break;
+                                //        }
+                                //    }
+                                //}
                             }
                         }
                     }

@@ -40,73 +40,89 @@ namespace Ekz_WPF
             int j = indexColDown;
             for (int i = indexRowDown; i < size; i++)
             {
-                if (fields[i, j].FigurBase == null || (fields[i, j].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
-
-                  
-
-                    if (j == size - 1 || i == size - 1)
-                        break;
-
-                    j++;
                 }
-                else
+                else if ((fields[i, j].FigurBase.ColorFigure != this.ColorFigure))
+                {
+                    yield return new Point(i, j);
                     break;
+                }
+                else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
+                {
+                    break;
+                }
+
+                if (j == size - 1 || i == size - 1)
+                    break;
+
+                j++;
             }
 
             //Расчет хода по диагонали вниз-влево
             j = indexColUp;
             for (int i = indexRowDown; i < size; i++)
             {
-                if (fields[i, j].FigurBase == null || (fields[i, j].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
-                  
-
-                    if (j == 0 || i == size - 1)
-                        break;
-
-                    j--;
                 }
-                else
+                else if (fields[i, j].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(i, j);
                     break;
+                }
+                else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
+                    break;
+
+                if (j == 0 || i == size - 1)
+                    break;
+
+                j--;
             }
 
             //Расчет хода по диагонали вверх-вправо
             j = indexColDown;
             for (int i = indexRowUp; i > 0; i--)
             {
-                if (fields[i, j].FigurBase == null || (fields[i, j].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
-
-
-                    if (i == 0 || j == size - 1)
-                        break;
-
-                    j++;
                 }
-                else
+                else if (fields[i, j].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(i, j);
                     break;
+                }
+                else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
+                    break;
+
+                if (i == 0 || j == size - 1)
+                    break;
+
+                j++;
             }
 
             //Расчет хода по диагонали вверх - влево
             j = indexColUp;
             for (int i = indexRowUp; i >= 0; i--)
             {
-                if (fields[i, j].FigurBase == null || (fields[i, j].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
-                 
-
-                    if (j == 0)
-                        break;
-
-                    j--;
                 }
-                else
+                else if (fields[i, j].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(i, j);
                     break;
+                }
+                else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
+                    break;
+
+                if (j == 0)
+                    break;
+                j--;
             }
         }
     }

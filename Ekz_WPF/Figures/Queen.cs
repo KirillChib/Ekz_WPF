@@ -40,100 +40,148 @@ namespace Ekz_WPF
             int j = indexColDown;
             for (int i = indexRowDown; i < size; i++)
             {
-                if (fields[i, j].FigurBase == null || (fields[i, j].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
-
-                    if (j == size - 1 || i == size - 1)
-                        break;
-
-                    j++;
                 }
-                else
+                else if ((fields[i, j].FigurBase.ColorFigure != this.ColorFigure))
+                {
+                    yield return new Point(i, j);
                     break;
+                }
+                else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
+                {
+                    break;
+                }
+
+                if (j == size - 1 || i == size - 1)
+                    break;
+
+                j++;
             }
 
             //Расчет хода по диагонали вниз-влево
             j = indexColUp;
             for (int i = indexRowDown; i < size; i++)
             {
-                if (fields[i, j].FigurBase == null || (fields[i, j].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
-
-                    if (j == 0 || i == size - 1)
-                        break;
-
-                    j--;
                 }
-                else
+                else if (fields[i, j].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(i, j);
                     break;
+                }
+                else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
+                    break;
+
+                if (j == 0 || i == size - 1)
+                    break;
+
+                j--;
             }
 
             //Расчет хода по диагонали вверх-вправо
             j = indexColDown;
             for (int i = indexRowUp; i > 0; i--)
             {
-                if (fields[i, j].FigurBase == null || (fields[i, j].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
-
-                    if (i == 0 || j == size - 1)
-                        break;
-
-                    j++;
                 }
-                else
+                else if (fields[i, j].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(i, j);
                     break;
+                }
+                else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
+                    break;
+
+                if (i == 0 || j == size - 1)
+                    break;
+
+                j++;
             }
 
             //Расчет хода по диагонали вверх - влево
             j = indexColUp;
             for (int i = indexRowUp; i >= 0; i--)
             {
-                if (fields[i, j].FigurBase == null || (fields[i, j].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
-
-                    if (j == 0)
-                        break;
-
-                    j--;
                 }
-                else
+                else if (fields[i, j].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(i, j);
                     break;
+                }
+                else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
+                    break;
+
+                if (j == 0)
+                    break;
+                j--;
             }
 
             //Ход Вверх
             for (int i = indexRowUp; i >= 0; i--)
             {
-                if (fields[i, (int)point.Y].FigurBase == null || (fields[i, (int)point.Y].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, (int)point.Y].FigurBase == null)
+                {
                     yield return new Point(i, point.Y);
-                else
+                }
+                else if (fields[i, (int)point.Y].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(i, point.Y);
+                    break;
+                }
+                else if (fields[i, (int)point.Y].FigurBase.ColorFigure == this.ColorFigure)
                     break;
             }
             //Ход Вниз
             for (int i = indexRowDown; i < size; i++)
             {
-                if (fields[i, (int)point.Y].FigurBase == null || (fields[i, (int)point.Y].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[i, (int)point.Y].FigurBase == null)
+                {
                     yield return new Point(i, point.Y);
-                else
+                }
+                else if (fields[i, (int)point.Y].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(i, point.Y);
+                    break;
+                }
+                else if (fields[i, (int)point.Y].FigurBase.ColorFigure == this.ColorFigure)
                     break;
             }
             //Ход Влево
             for (int i = indexColUp; i >= 0; i--)
             {
-                if (fields[(int)point.X, i].FigurBase == null || (fields[(int)point.X, i].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[(int)point.X, i].FigurBase == null)
+                {
                     yield return new Point(point.X, i);
-                else
+                }
+                else if (fields[(int)point.X, i].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(point.X, i);
+                }
+                else if (fields[(int)point.X, i].FigurBase.ColorFigure == this.ColorFigure)
                     break;
             }
             //Ход Вправо
             for (int i = indexColDown; i < size; i++)
             {
-                if (fields[(int)point.X, i].FigurBase == null || (fields[(int)point.X, i].FigurBase.ColorFigure != this.ColorFigure))
+                if (fields[(int)point.X, i].FigurBase == null)
+                {
                     yield return new Point(point.X, i);
-                else
+                }
+                else if (fields[(int)point.X, i].FigurBase.ColorFigure != this.ColorFigure)
+                {
+                    yield return new Point(point.X, i);
+                    break;
+                }
+                else if (fields[(int)point.X, i].FigurBase.ColorFigure == this.ColorFigure)
                     break;
             }
         }

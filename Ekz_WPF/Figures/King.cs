@@ -143,7 +143,7 @@ namespace Ekz_WPF
                     
                 }
             }
-            return true; ;
+            return true; 
         }
     }
 }
