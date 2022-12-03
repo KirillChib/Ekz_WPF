@@ -17,6 +17,7 @@ namespace Ekz_WPF
             InitializeComponent();
 
             InitGrid();
+            InitFieldsForDeletedFigure();
         }
 
         private void InitGrid()
@@ -40,6 +41,53 @@ namespace Ekz_WPF
             }
         }
 
+        private void InitFieldsForDeletedFigure()
+        {
+            for (int i = 0; i < _board._size * 2; i++)
+            {
+                var btn = new Button();
+                btn.Width = 50;
+                btn.Height = 50;
+                btn.IsEnabled = false;
+                btn.Content = null;
+
+                _board.DeletedWhiteFigures.Add(btn);
+
+                if (i >= _board._size)
+                {
+                    Grid.SetColumn(btn, 0);
+                    WhiteFigures.Children.Add(btn);
+                }
+                else
+                {
+                    Grid.SetColumn(btn, 1);
+                    WhiteFigures1.Children.Add(btn);
+                }
+            }
+
+            for (int i = 0; i < _board._size * 2; i++)
+            {
+                var btn = new Button();
+                btn.Width = 50;
+                btn.Height = 50;
+                btn.IsEnabled = false;
+                btn.Content = null;
+
+                _board.DeletedBlackFigures.Add(btn);
+
+                if (i >= _board._size)
+                {
+                    Grid.SetColumn(btn, 0);
+                    BlackFigure.Children.Add(btn);
+                }
+                else
+                {
+                    Grid.SetColumn(btn, 1);
+                    BlackFigure1.Children.Add(btn);
+                }
+            }
+        }
+
         private void Btn_Click(object sender, RoutedEventArgs e)
         {
             if (!(sender is Button))
@@ -59,7 +107,8 @@ namespace Ekz_WPF
                 if (_board.IsChek == false)
                 {
                     if ((_board.Fields[(int)point.X, (int)point.Y].FigurBase == null) ||
-                        (_board.Fields[(int)point.X, (int)point.Y].FigurBase != null && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black))
+                        (_board.Fields[(int)point.X, (int)point.Y].FigurBase != null
+                        && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black))
                     {
                         return;
                     }
@@ -72,91 +121,50 @@ namespace Ekz_WPF
                            .Where(c => (c.X < _board._size && c.Y < _board._size) && (c.X >= 0 && c.Y >= 0))
                            .Select(c => new Point(c.X, c.Y)).ToList();
 
-                        //if (_board.ForCheckChessOrMate.Count == 0)
-                        //{
-                        //    _board.ForCheckChessOrMate.Add(_board.Fields[(int)point.X, (int)point.Y].FigurBase, _board.listRules);
-                        //}
-                        //else
-                        //{
-                        //    bool check = false;
-
-                        //    foreach(var item in _board.ForCheckChessOrMate)
-                        //    {
-                        //        if(_board.Fields[(int)point.X, (int)point.Y].FigurBase == item.Key)
-                        //        {
-                        //            item.Value = _board.listRules;
-                        //            check = true;
-                        //            break;
-                        //        }
-                        //    }
-                        //    if(check == false)
-                        //    {
-                        //        _board.ForCheckChessOrMate.Add(_board.Fields[(int)point.X, (int)point.Y].FigurBase, _board.listRules);
-                        //    }
-                        //    //_board.ForCheckChessOrMate.Add(_board.Fields[(int)point.X, (int)point.Y].FigurBase, _board.listRules);
-                        //}
-
-                        foreach (var item in _board.listRules)
-                        {
-                            if ((_board.Fields[(int)item.X, (int)item.Y].FigurBase != null) &&
-                                (_board.Fields[(int)item.X, (int)item.Y].FigurBase.ColorFigure == ColorOfFigure.White))
-                            {
-                                continue;
-                            }
-
-                            _board.Buttons[(int)item.X, (int)item.Y].BorderThickness = new Thickness(3);
-                            _board.Buttons[(int)item.X, (int)item.Y].BorderBrush = Brushes.Purple;
-                        }
+                        _board.AddRulesInDictionary(_board.Fields[(int)point.X, (int)point.Y].FigurBase, _board.listRules);
+                        _board.ShowRulesOfFigure(_board.listRules, ColorOfFigure.White);
 
                         _board.IsChek = true;
                     }
                 }
                 else if (_board.IsChek == true)
                 {
-                    foreach (var item in _board.listRules)
+                    _board.DoActionFigures(_board.listRules, point, ColorOfFigure.White);
+
+                    //foreach (var item in _board.listRules)
+                    //{
+                    //    if (item == point)
+                    //    {
+                    //        if (_board.Fields[(int)point.X, (int)point.Y].FigurBase is King king)
+                    //        {
+                    //            king.CurrentField = point;
+                    //        }
+
+                    //        if ((_board.Fields[(int)point.X, (int)point.Y].FigurBase != null && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black) ||
+                    //            _board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
+                    //        {
+                    //            _board.Fields[(int)item.X, (int)item.Y].FigurBase = _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase;
+                    //            _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase = null;
+
+                    //            _board.Buttons[(int)item.X, (int)item.Y].Content = _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content;
+                    //            _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content = null;
+
+                    //            _board.IsChek = false;
+
+                    //            _board.Player = ColorOfFigure.Black;
+
+                    //            return;
+                    //        }
+                    //    }
+                    //}
+                    //_board.IsChek = false;
+                    //return;
+
+                    if (_board.Player == ColorOfFigure.Black)
                     {
-                        if (item == point)
-                        {
-                            if (_board.Fields[(int)point.X, (int)point.Y].FigurBase is King king)
-                            {
-                                king.CurrentField = point;
-                            }
-
-                            if ((_board.Fields[(int)point.X, (int)point.Y].FigurBase != null && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black) ||
-                                _board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
-                            {
-                                _board.Fields[(int)item.X, (int)item.Y].FigurBase = _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase;
-                                _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase = null;
-
-                                _board.Buttons[(int)item.X, (int)item.Y].Content = _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content;
-                                _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content = null;
-
-                                _board.IsChek = false;
-
-                                _board.Player = ColorOfFigure.Black;
-
-                                //foreach (var it in _board.Fields)
-                                //{
-                                //    if (it.FigurBase is King k && k.ColorFigure == ColorOfFigure.Black)
-                                //    {
-                                //        if (k.CheckMate(_board.ForCheckChessOrMate, k.Rules(_board.Fields, _board.Buttons, k.CurrentField).ToList()))
-                                //        {
-                                //            MessageBox.Show("Черным мат!");
-                                //            break;
-                                //        }
-                                //        else if (k.CheckChess(_board.ForCheckChessOrMate))
-                                //        {
-                                //            MessageBox.Show("Черным шах!");
-                                //            break;
-                                //        }
-                                //    }
-                                //}
-                                return;
-                            }
-                        }
+                        tbBlack.Visibility = Visibility.Visible;
+                        tbWhite.Visibility = Visibility.Collapsed;
                     }
-                    _board.IsChek = false;
-                    return;
                 }
             }
             else if (_board.Player == ColorOfFigure.Black) // если ход  игрока за черными фигурами
@@ -177,65 +185,56 @@ namespace Ekz_WPF
                            .Where(c => (c.X < _board._size && c.Y < _board._size) && (c.X >= 0 && c.Y >= 0))
                            .Select(c => new Point(c.X, c.Y)).ToList();
 
-                        foreach (var item in _board.listRules)
-                        {
-                            if ((_board.Fields[(int)item.X, (int)item.Y].FigurBase != null) &&
-                                (_board.Fields[(int)item.X, (int)item.Y].FigurBase.ColorFigure == ColorOfFigure.Black))
-                            {
-                                continue;
-                            }
+                        _board.ShowRulesOfFigure(_board.listRules, ColorOfFigure.Black);
+                        //foreach (var item in _board.listRules)
+                        //{
+                        //    if ((_board.Fields[(int)item.X, (int)item.Y].FigurBase != null) &&
+                        //        (_board.Fields[(int)item.X, (int)item.Y].FigurBase.ColorFigure == ColorOfFigure.Black))
+                        //    {
+                        //        continue;
+                        //    }
 
-                            _board.Buttons[(int)item.X, (int)item.Y].BorderThickness = new Thickness(3);
-                            _board.Buttons[(int)item.X, (int)item.Y].BorderBrush = Brushes.Purple;
-                        }
+                        //    _board.Buttons[(int)item.X, (int)item.Y].BorderThickness = new Thickness(3);
+                        //    _board.Buttons[(int)item.X, (int)item.Y].BorderBrush = Brushes.Purple;
+                        //}
 
                         _board.IsChek = true;
                     }
                 }
                 else if (_board.IsChek == true)
                 {
-                    foreach (var item in _board.listRules)
+                    _board.DoActionFigures(_board.listRules, point, ColorOfFigure.Black);
+                    //foreach (var item in _board.listRules)
+                    //{
+                    //    if (item == point)
+                    //    {
+                    //        if ((_board.Fields[(int)point.X, (int)point.Y].FigurBase != null && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.White) ||
+                    //            _board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
+                    //        {
+                    //            if (_board.Fields[(int)point.X, (int)point.Y].FigurBase is King king)
+                    //            {
+                    //                king.CurrentField = point;
+                    //            }
+                    //            _board.Fields[(int)item.X, (int)item.Y].FigurBase = _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase;
+                    //            _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase = null;
+
+                    //            _board.Buttons[(int)item.X, (int)item.Y].Content = _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content;
+                    //            _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content = null;
+
+                    //            _board.IsChek = false;
+
+                    //            _board.Player = ColorOfFigure.White;
+                    //            return;
+                    //        }
+                    //    }
+                    //}
+                    //_board.IsChek = false;
+
+                    if (_board.Player == ColorOfFigure.White)
                     {
-                        if (item == point)
-                        {
-                            if ((_board.Fields[(int)point.X, (int)point.Y].FigurBase != null && _board.Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.White) ||
-                                _board.Fields[(int)point.X, (int)point.Y].FigurBase == null)
-                            {
-                                if (_board.Fields[(int)point.X, (int)point.Y].FigurBase is King king)
-                                {
-                                    king.CurrentField = point;
-                                }
-                                _board.Fields[(int)item.X, (int)item.Y].FigurBase = _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase;
-                                _board.Fields[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].FigurBase = null;
-
-                                _board.Buttons[(int)item.X, (int)item.Y].Content = _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content;
-                                _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content = null;
-
-                                _board.IsChek = false;
-
-                                _board.Player = ColorOfFigure.White;
-                                return;
-
-                                //foreach (var it in _board.Fields)
-                                //{
-                                //    if (it.FigurBase is King k && k.ColorFigure == ColorOfFigure.White)
-                                //    {
-                                //        if (k.CheckMate(_board.ForCheckChessOrMate, k.Rules(_board.Fields, _board.Buttons, k.CurrentField).ToList()))
-                                //        {
-                                //            MessageBox.Show("Белым мат!");
-                                //            break;
-                                //        }
-                                //        else if (k.CheckChess(_board.ForCheckChessOrMate))
-                                //        {
-                                //            MessageBox.Show("Белым шах!");
-                                //            break;
-                                //        }
-                                //    }
-                                //}
-                            }
-                        }
+                        tbWhite.Visibility = Visibility.Visible;
+                        tbBlack.Visibility = Visibility.Collapsed;
                     }
-                    _board.IsChek = false;
                 }
             }
         }
@@ -243,6 +242,9 @@ namespace Ekz_WPF
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
             _board.StartNewGame();
+
+            tbBlack.Visibility = Visibility.Collapsed;
+            tbWhite.Visibility = Visibility.Visible;
         }
     }
 }

@@ -10,8 +10,9 @@ namespace Ekz_WPF
         public readonly int _size = 8;
         public List<Point> listRules = new List<Point>();
         public Point CurrentPoint { get; set; }
-
         private Dictionary<FigurBase, List<Point>> forCheckChessOrMate;
+        private List<Button> deletedWhiteFigures;
+        private List<Button> deletedBlackFigures;
         public bool IsChek { get; set; }
         private ColorOfFigure player = ColorOfFigure.White;
         private Field[,] _fields;
@@ -22,6 +23,8 @@ namespace Ekz_WPF
         internal Field[,] Fields { get => _fields; set => _fields = value; }
         internal ColorOfFigure Player { get => player; set => player = value; }
         internal Dictionary<FigurBase, List<Point>> ForCheckChessOrMate { get => forCheckChessOrMate; set => forCheckChessOrMate = value; }
+        public List<Button> DeletedWhiteFigures { get => deletedWhiteFigures; }
+        public List<Button> DeletedBlackFigures { get => deletedBlackFigures; }
 
         public Board()
         {
@@ -29,6 +32,8 @@ namespace Ekz_WPF
             _fields = new Field[_size, _size];
             _buttons = new Button[_size, _size];
             forCheckChessOrMate = new Dictionary<FigurBase, List<Point>>();
+            deletedWhiteFigures = new List<Button>();
+            deletedBlackFigures = new List<Button>();
 
             IsChek = false;
 
@@ -173,6 +178,145 @@ namespace Ekz_WPF
                 }
 
             return point;
+        }
+
+        public void ShowRulesOfFigure(List<Point> rules, ColorOfFigure color)
+        {
+            if (color == ColorOfFigure.White)
+            {
+                foreach (var item in rules)
+                {
+                    if ((Fields[(int)item.X, (int)item.Y].FigurBase != null) &&
+                        (Fields[(int)item.X, (int)item.Y].FigurBase.ColorFigure == ColorOfFigure.White))
+                    {
+                        continue;
+                    }
+
+                    Buttons[(int)item.X, (int)item.Y].BorderThickness = new Thickness(3);
+                    Buttons[(int)item.X, (int)item.Y].BorderBrush = Brushes.Purple;
+                }
+            }
+            else if (color == ColorOfFigure.Black)
+            {
+                foreach (var item in rules)
+                {
+                    if ((Fields[(int)item.X, (int)item.Y].FigurBase != null) &&
+                        (Fields[(int)item.X, (int)item.Y].FigurBase.ColorFigure == ColorOfFigure.Black))
+                    {
+                        continue;
+                    }
+
+                    Buttons[(int)item.X, (int)item.Y].BorderThickness = new Thickness(3);
+                    Buttons[(int)item.X, (int)item.Y].BorderBrush = Brushes.Purple;
+                }
+            }
+        }
+
+        public void DoActionFigures(List<Point> rules, Point point, ColorOfFigure color)
+        {
+            if (color == ColorOfFigure.White)
+            {
+                foreach (var item in rules)
+                {
+                    if (item == point)
+                    {
+                        if (Fields[(int)point.X, (int)point.Y].FigurBase is King king)
+                        {
+                            king.CurrentField = point;
+                        }
+
+                        if ((Fields[(int)point.X, (int)point.Y].FigurBase != null && Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black) ||
+                            Fields[(int)point.X, (int)point.Y].FigurBase == null)
+                        {
+                            Fields[(int)item.X, (int)item.Y].FigurBase = Fields[(int)CurrentPoint.X, (int)CurrentPoint.Y].FigurBase;
+                            Fields[(int)CurrentPoint.X, (int)CurrentPoint.Y].FigurBase = null;
+
+                            if (Fields[(int)point.X, (int)point.Y].FigurBase != null && Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black)
+                            {
+                                foreach (var it in deletedBlackFigures)
+                                {
+                                    if (it.Content == null)
+                                    {
+                                        it.Content = Buttons[(int)item.X, (int)item.Y].Content;
+                                    }
+                                }
+                            }
+
+                            Buttons[(int)item.X, (int)item.Y].Content = Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content;
+                            Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content = null;
+
+                            IsChek = false;
+
+                            Player = ColorOfFigure.Black;
+
+                            return;
+                        }
+                    }
+                }
+                IsChek = false;
+                return;
+            }
+            else if (color == ColorOfFigure.Black)
+            {
+                foreach (var item in listRules)
+                {
+                    if (item == point)
+                    {
+                        if ((Fields[(int)point.X, (int)point.Y].FigurBase != null && Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.White) ||
+                            Fields[(int)point.X, (int)point.Y].FigurBase == null)
+                        {
+                            if (Fields[(int)point.X, (int)point.Y].FigurBase is King king)
+                            {
+                                king.CurrentField = point;
+                            }
+                            Fields[(int)item.X, (int)item.Y].FigurBase = Fields[(int)CurrentPoint.X, (int)CurrentPoint.Y].FigurBase;
+                            Fields[(int)CurrentPoint.X, (int)CurrentPoint.Y].FigurBase = null;
+
+                            //if(Fields[(int)point.X, (int)point.Y].FigurBase != null && Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.White)
+                            //{
+                            foreach (var it in deletedWhiteFigures)
+                            {
+                                if (it.Content == null)
+                                {
+                                    it.Content = Buttons[(int)item.X, (int)item.Y].Content;
+                                }
+                            }
+                            // }
+
+                            Buttons[(int)item.X, (int)item.Y].Content = Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content;
+                            Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content = null;
+
+                            IsChek = false;
+
+                            Player = ColorOfFigure.White;
+                            return;
+                        }
+                    }
+                }
+                IsChek = false;
+            }
+        }
+
+        public void AddRulesInDictionary(FigurBase figur, List<Point> rules)
+        {
+            if (ForCheckChessOrMate.Count == 0)
+            {
+                ForCheckChessOrMate.Add(figur, rules);
+                return;
+            }
+            else
+            {
+                foreach (var item in ForCheckChessOrMate)
+                {
+                    if (item.Key == figur)
+                    {
+                        ForCheckChessOrMate.Remove(figur);
+                        ForCheckChessOrMate.Add(figur, rules);
+                        return;
+                    }
+                }
+            }
+            ForCheckChessOrMate.Add(figur, rules);
         }
     }
 }

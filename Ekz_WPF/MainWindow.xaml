@@ -16,9 +16,11 @@
                 <RowDefinition Height="50" />
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="8*" />
                 <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
             <Button Grid.Row="0" Grid.Column="0"
                     Margin="5"
@@ -26,7 +28,64 @@
                     Background="Gray"
                     Foreground="White"
                     Click="NewGame_Click" />
-            <Grid Grid.ColumnSpan="2" Grid.Row="0">
+            <StackPanel                      
+                        Grid.Row="1"
+                        Grid.Column="0">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                        x:Name="WhiteFigures"
+                        Grid.Column="0">
+                    </StackPanel>
+                    <StackPanel
+                        x:Name="WhiteFigures1"
+                        Grid.Column="1">
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+            <StackPanel                   
+                        Grid.Row="1"
+                        Grid.Column="4">
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <StackPanel
+                        x:Name="BlackFigure"
+                        Grid.Column="0">
+                    </StackPanel>
+                    <StackPanel
+                        x:Name="BlackFigure1"
+                        Grid.Column="1">
+                    </StackPanel>
+                </Grid>
+            </StackPanel>
+            <TextBlock x:Name="tbWhite"
+                       Grid.Row="2"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="2"
+                       FontSize="20"
+                       Background="Bisque"
+                       FontWeight="ExtraBold"
+                       TextWrapping="Wrap"
+                       Text="Ход Белых"
+                       Visibility="Collapsed" />
+            <TextBlock x:Name="tbBlack"
+                       Grid.Row="0"
+                       Grid.Column="3"
+                       Grid.ColumnSpan="2"
+                       Visibility="Collapsed"
+                       FontSize="20"
+                       Background="Bisque"
+                       FontWeight="ExtraBold"
+                       TextWrapping="Wrap"
+                       Text="Ход Черных" />
+
+            <Grid Grid.Column="2" Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -36,50 +95,49 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
-                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="1"
+                <TextBlock Grid.Column="0"
                            Padding="15,0,0,0"
                            FontSize="30"
                            Text="A"
                            VerticalAlignment="Bottom"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="2"
+                <TextBlock Grid.Column="1"
                             Padding="15,0,0,0"
                            FontSize="30"
                            Text="B"
                            VerticalAlignment="Bottom"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="3"
+                <TextBlock Grid.Column="2"
                             Padding="15,0,0,0"
                            FontSize="30"
                            Text="C"
                            VerticalAlignment="Bottom"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="4"
+                <TextBlock Grid.Column="3"
                            FontSize="30"
                            Text="D"
                            VerticalAlignment="Bottom"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="5"
+                <TextBlock Grid.Column="4"
                             Padding="0,0,5,0"
                            FontSize="30"
                            Text="E"
                            VerticalAlignment="Bottom"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="6"
+                <TextBlock Grid.Column="5"
                             Padding="0,0,15,0"
                            FontSize="30"
                            Text="F"
                            VerticalAlignment="Bottom"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="7"
+                <TextBlock Grid.Column="6"
                             Padding="0,0,25,0"
                            FontSize="30"
                            Text="G"
                            VerticalAlignment="Bottom"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="8"
+                <TextBlock Grid.Column="7"
                             Padding="0,0,30,0"
                            FontSize="30"
                            Text="H"
@@ -87,7 +145,7 @@
                            HorizontalAlignment="Center" />
             </Grid>
 
-            <Grid Grid.ColumnSpan="2" Grid.Row="2">
+            <Grid Grid.Column="2"  Grid.Row="2">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
                     <ColumnDefinition />
@@ -97,50 +155,49 @@
                     <ColumnDefinition />
                     <ColumnDefinition />
                     <ColumnDefinition />
-                    <ColumnDefinition />
                 </Grid.ColumnDefinitions>
-                <TextBlock Grid.Column="1"
+                <TextBlock Grid.Column="0"
                            Padding="15,0,0,0"
                            FontSize="30"
                            Text="A"
                            VerticalAlignment="Top"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="2"
+                <TextBlock Grid.Column="1"
                             Padding="15,0,0,0"
                            FontSize="30"
                            Text="B"
                            VerticalAlignment="Top"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="3"
+                <TextBlock Grid.Column="2"
                             Padding="15,0,0,0"
                            FontSize="30"
                            Text="C"
                            VerticalAlignment="Top"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="4"
+                <TextBlock Grid.Column="3"
                            FontSize="30"
                            Text="D"
                            VerticalAlignment="Top"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="5"
+                <TextBlock Grid.Column="4"
                             Padding="0,0,5,0"
                            FontSize="30"
                            Text="E"
                            VerticalAlignment="Top"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="6"
+                <TextBlock Grid.Column="5"
                             Padding="0,0,15,0"
                            FontSize="30"
                            Text="F"
                            VerticalAlignment="Top"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="7"
+                <TextBlock Grid.Column="6"
                             Padding="0,0,25,0"
                            FontSize="30"
                            Text="G"
                            VerticalAlignment="Top"
                            HorizontalAlignment="Center" />
-                <TextBlock Grid.Column="8"
+                <TextBlock Grid.Column="7"
                             Padding="0,0,30,0"
                            FontSize="30"
                            Text="H"
@@ -148,7 +205,7 @@
                            HorizontalAlignment="Center" />
             </Grid>
 
-            <Grid Grid.Row="1" Grid.Column="0">
+            <Grid Grid.Row="1" Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -199,7 +256,7 @@
                            HorizontalAlignment="Right"
                            FontSize="30" Text="1" />
             </Grid>
-            <Grid Grid.Row="1" Grid.Column="2">
+            <Grid Grid.Row="1" Grid.Column="3">
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition />
@@ -249,7 +306,7 @@
                            HorizontalAlignment="Left"
                            FontSize="30" Text="1" />
             </Grid>
-            <Border Grid.Row="1" Grid.Column="1"
+            <Border Grid.Row="1" Grid.Column="2"
                     BorderThickness="20"
                     BorderBrush="Brown"
                     CornerRadius="10">
