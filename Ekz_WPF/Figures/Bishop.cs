@@ -40,6 +40,9 @@ namespace Ekz_WPF
             int j = indexColDown;
             for (int i = indexRowDown; i < size; i++)
             {
+                if (j > size - 1 || i > size - 1)
+                    break;
+
                 if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
@@ -54,9 +57,6 @@ namespace Ekz_WPF
                     break;
                 }
 
-                if (j == size - 1 || i == size - 1)
-                    break;
-
                 j++;
             }
 
@@ -64,6 +64,9 @@ namespace Ekz_WPF
             j = indexColUp;
             for (int i = indexRowDown; i < size; i++)
             {
+                if (j < 0 || i > size - 1)
+                    break;
+
                 if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
@@ -74,9 +77,6 @@ namespace Ekz_WPF
                     break;
                 }
                 else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
-                    break;
-
-                if (j == 0 || i == size - 1)
                     break;
 
                 j--;
@@ -84,8 +84,11 @@ namespace Ekz_WPF
 
             //Расчет хода по диагонали вверх-вправо
             j = indexColDown;
-            for (int i = indexRowUp; i > 0; i--)
+            for (int i = indexRowUp; i >= 0; i--)
             {
+                if (i < 0 || j > size - 1)
+                    break;
+
                 if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
@@ -96,9 +99,6 @@ namespace Ekz_WPF
                     break;
                 }
                 else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
-                    break;
-
-                if (i == 0 || j == size - 1)
                     break;
 
                 j++;
@@ -108,6 +108,9 @@ namespace Ekz_WPF
             j = indexColUp;
             for (int i = indexRowUp; i >= 0; i--)
             {
+                if (j < 0)
+                    break;
+
                 if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
@@ -120,8 +123,6 @@ namespace Ekz_WPF
                 else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
                     break;
 
-                if (j == 0)
-                    break;
                 j--;
             }
         }

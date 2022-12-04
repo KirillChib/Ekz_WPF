@@ -7,6 +7,7 @@ namespace Ekz_WPF
     internal class King : FigurBase
     {
         public Point CurrentField { get; set; }
+        public bool IsChess { get; set; } = false;
 
         public King(Image icon, ColorOfFigure colorFigure) : base(icon, colorFigure)
         {
@@ -106,22 +107,58 @@ namespace Ekz_WPF
             }
         }
 
-        public bool CheckChess(Dictionary<FigurBase, List<Point>> points)
+        public bool CheckChess(Dictionary<FigurBase, List<Point>> points, ColorOfFigure color)
         {
-            var list = new List<Point>();
-            foreach (var item in points)
+            if (color == ColorOfFigure.White)
             {
-                foreach (var it in points.Values)
-                    list = it;
-                foreach (var it in list)
+                var list = new List<Point>();
+                foreach (var i in points)
                 {
-                    if (it == CurrentField)
+                    foreach (var it in points.Values)
                     {
-                        return true;
+                        if (i.Key.ColorFigure == ColorOfFigure.White)
+                        {
+                            continue;
+                        }
+                        else
+                            list = it;
+
+                        foreach (var item in list)
+                        {
+                            if (item == CurrentField)
+                            {
+                                return true;
+                            }
+                        }
                     }
                 }
+                return false;
             }
-            return false;
+            else
+            {
+                var list = new List<Point>();
+                foreach (var i in points)
+                {
+                    foreach (var it in points.Values)
+                    {
+                        if (i.Key.ColorFigure == ColorOfFigure.Black)
+                        {
+                            continue;
+                        }
+                        else
+                            list = it;
+
+                        foreach (var item in list)
+                        {
+                            if (item == CurrentField)
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+                return false;
+            }
         }
 
         public bool CheckMate(Dictionary<FigurBase, List<Point>> points, List<Point> rules)
@@ -133,17 +170,16 @@ namespace Ekz_WPF
                     list = it;
                 foreach (var it in list)
                 {
-                    foreach(var i in rules)
+                    foreach (var i in rules)
                     {
                         if (i != it)
                         {
                             return false;
                         }
                     }
-                    
                 }
             }
-            return true; 
+            return true;
         }
     }
 }

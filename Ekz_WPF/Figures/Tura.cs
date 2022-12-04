@@ -76,6 +76,7 @@ namespace Ekz_WPF
                 else if (fields[(int)point.X, i].FigurBase.ColorFigure != this.ColorFigure)
                 {
                     yield return new Point(point.X, i);
+                    break;
                 }
                 else if (fields[(int)point.X , i].FigurBase.ColorFigure == this.ColorFigure)
                     break;

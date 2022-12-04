@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -9,6 +10,8 @@ namespace Ekz_WPF
     {
         public readonly int _size = 8;
         public List<Point> listRules = new List<Point>();
+        public King blackKing;
+        public King whiteKing;
         public Point CurrentPoint { get; set; }
         private Dictionary<FigurBase, List<Point>> forCheckChessOrMate;
         private List<Button> deletedWhiteFigures;
@@ -20,11 +23,12 @@ namespace Ekz_WPF
         private LoadImages images;
 
         public Button[,] Buttons { get => _buttons; set => _buttons = value; }
-        internal Field[,] Fields { get => _fields; set => _fields = value; }
+
         internal ColorOfFigure Player { get => player; set => player = value; }
         internal Dictionary<FigurBase, List<Point>> ForCheckChessOrMate { get => forCheckChessOrMate; set => forCheckChessOrMate = value; }
         public List<Button> DeletedWhiteFigures { get => deletedWhiteFigures; }
         public List<Button> DeletedBlackFigures { get => deletedBlackFigures; }
+        internal Field[,] Fields { get => _fields; set => _fields = value; }
 
         public Board()
         {
@@ -54,7 +58,6 @@ namespace Ekz_WPF
         public void StartNewGame()
         {
             _fields[0, 0].FigurBase = new Tura(images.BlackTura, ColorOfFigure.Black);
-
             _buttons[0, 0].Content = images.BlackTura;
 
             _fields[0, 1].FigurBase = new Horse(images.BlackHorse, ColorOfFigure.Black);
@@ -67,6 +70,7 @@ namespace Ekz_WPF
             _buttons[0, 3].Content = images.BlackQueen;
 
             _fields[0, 4].FigurBase = new King(images.BlackKing, ColorOfFigure.Black) { CurrentField = new Point(0, 4) };
+            blackKing = (King)_fields[0, 4].FigurBase;
             _buttons[0, 4].Content = images.BlackKing;
 
             _fields[0, 5].FigurBase = new Bishop(images.BlackBishop1, ColorOfFigure.Black);
@@ -115,6 +119,7 @@ namespace Ekz_WPF
             _buttons[7, 3].Content = images.WhiteQueen;
 
             _fields[7, 4].FigurBase = new King(images.WhiteKing, ColorOfFigure.White) { CurrentField = new Point(7, 4) };
+            whiteKing = (King)_fields[7, 4].FigurBase;
             _buttons[7, 4].Content = images.WhiteKing;
 
             _fields[7, 5].FigurBase = new Bishop(images.WhiteBishop1, ColorOfFigure.White);
@@ -231,19 +236,27 @@ namespace Ekz_WPF
                             Fields[(int)item.X, (int)item.Y].FigurBase = Fields[(int)CurrentPoint.X, (int)CurrentPoint.Y].FigurBase;
                             Fields[(int)CurrentPoint.X, (int)CurrentPoint.Y].FigurBase = null;
 
-                            if (Fields[(int)point.X, (int)point.Y].FigurBase != null && Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black)
-                            {
+                            AddRulesInDictionary(ForCheckChessOrMate);
+
+                            //if (Fields[(int)point.X, (int)point.Y].FigurBase != null && Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black)
+                            //{
                                 foreach (var it in deletedBlackFigures)
                                 {
-                                    if (it.Content == null)
+                                    if (it.Content != null)
+                                        continue;
+                                    else if (it.Content == null)
                                     {
                                         it.Content = Buttons[(int)item.X, (int)item.Y].Content;
+                                        break;
                                     }
                                 }
-                            }
+                           // }
 
-                            Buttons[(int)item.X, (int)item.Y].Content = Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content;
-                            Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content = null;
+                                Buttons[(int)item.X, (int)item.Y].Content = Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content;
+                                Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content = null;
+
+                                
+                            
 
                             IsChek = false;
 
@@ -269,16 +282,27 @@ namespace Ekz_WPF
                             {
                                 king.CurrentField = point;
                             }
+
+                            //foreach (var it in ForCheckChessOrMate)
+                            //{
+                            //    if (Fields[(int)point.X, (int)point.Y].FigurBase != null && it.Key == Fields[(int)item.X, (int)item.Y].FigurBase)
+                            //        ForCheckChessOrMate.Remove(Fields[(int)item.X, (int)item.Y].FigurBase);
+                            //}
+
                             Fields[(int)item.X, (int)item.Y].FigurBase = Fields[(int)CurrentPoint.X, (int)CurrentPoint.Y].FigurBase;
                             Fields[(int)CurrentPoint.X, (int)CurrentPoint.Y].FigurBase = null;
 
+                            AddRulesInDictionary(ForCheckChessOrMate);
                             //if(Fields[(int)point.X, (int)point.Y].FigurBase != null && Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.White)
                             //{
                             foreach (var it in deletedWhiteFigures)
                             {
-                                if (it.Content == null)
+                                if (it.Content != null)
+                                    continue;
+                                else if (it.Content == null)
                                 {
                                     it.Content = Buttons[(int)item.X, (int)item.Y].Content;
+                                    break;
                                 }
                             }
                             // }
@@ -297,26 +321,23 @@ namespace Ekz_WPF
             }
         }
 
-        public void AddRulesInDictionary(FigurBase figur, List<Point> rules)
+        public void AddRulesInDictionary(Dictionary<FigurBase, List<Point>> points)
         {
-            if (ForCheckChessOrMate.Count == 0)
+            points.Clear();
+
+            for (int i = 0; i < _size; i++)
             {
-                ForCheckChessOrMate.Add(figur, rules);
-                return;
-            }
-            else
-            {
-                foreach (var item in ForCheckChessOrMate)
+                for (int j = 0; j < _size; j++)
                 {
-                    if (item.Key == figur)
+                    if (_fields[i, j].FigurBase == null)
+                        continue;
+                    else
                     {
-                        ForCheckChessOrMate.Remove(figur);
-                        ForCheckChessOrMate.Add(figur, rules);
-                        return;
+                        var list = _fields[i, j].FigurBase.Rules(_fields, _buttons, new Point(i, j)).ToList();
+                        points.Add(_fields[i, j].FigurBase, list);
                     }
                 }
             }
-            ForCheckChessOrMate.Add(figur, rules);
         }
     }
 }
