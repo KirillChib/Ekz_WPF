@@ -240,23 +240,20 @@ namespace Ekz_WPF
 
                             //if (Fields[(int)point.X, (int)point.Y].FigurBase != null && Fields[(int)point.X, (int)point.Y].FigurBase.ColorFigure == ColorOfFigure.Black)
                             //{
-                                foreach (var it in deletedBlackFigures)
+                            foreach (var it in deletedBlackFigures)
+                            {
+                                if (it.Content != null)
+                                    continue;
+                                else if (it.Content == null)
                                 {
-                                    if (it.Content != null)
-                                        continue;
-                                    else if (it.Content == null)
-                                    {
-                                        it.Content = Buttons[(int)item.X, (int)item.Y].Content;
-                                        break;
-                                    }
+                                    it.Content = Buttons[(int)item.X, (int)item.Y].Content;
+                                    break;
                                 }
-                           // }
+                            }
+                            // }
 
-                                Buttons[(int)item.X, (int)item.Y].Content = Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content;
-                                Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content = null;
-
-                                
-                            
+                            Buttons[(int)item.X, (int)item.Y].Content = Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content;
+                            Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content = null;
 
                             IsChek = false;
 
@@ -306,7 +303,6 @@ namespace Ekz_WPF
                                 }
                             }
                             // }
-
                             Buttons[(int)item.X, (int)item.Y].Content = Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content;
                             Buttons[(int)CurrentPoint.X, (int)CurrentPoint.Y].Content = null;
 
@@ -320,7 +316,6 @@ namespace Ekz_WPF
                 IsChek = false;
             }
         }
-
         public void AddRulesInDictionary(Dictionary<FigurBase, List<Point>> points)
         {
             points.Clear();

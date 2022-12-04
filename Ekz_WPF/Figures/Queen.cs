@@ -57,8 +57,6 @@ namespace Ekz_WPF
                     break;
                 }
 
-                
-
                 j++;
             }
 
@@ -80,17 +78,16 @@ namespace Ekz_WPF
                 else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
                     break;
 
-                
-
                 j--;
             }
 
             //Расчет хода по диагонали вверх-вправо
             j = indexColDown;
-            for (int i = indexRowUp; i > 0; i--)
+            for (int i = indexRowUp; i >= 0; i--)
             {
                 if (i < 0 || j > size - 1)
                     break;
+
                 if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
@@ -102,8 +99,6 @@ namespace Ekz_WPF
                 }
                 else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
                     break;
-
-                
 
                 j++;
             }
@@ -112,6 +107,9 @@ namespace Ekz_WPF
             j = indexColUp;
             for (int i = indexRowUp; i >= 0; i--)
             {
+                if (j < 0 || i < 0)
+                    break;
+
                 if (fields[i, j].FigurBase == null)
                 {
                     yield return new Point(i, j);
@@ -124,8 +122,6 @@ namespace Ekz_WPF
                 else if (fields[i, j].FigurBase.ColorFigure == this.ColorFigure)
                     break;
 
-                if (j < 0)
-                    break;
                 j--;
             }
 

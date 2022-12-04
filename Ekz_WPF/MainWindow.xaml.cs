@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -275,7 +274,6 @@ namespace Ekz_WPF
                                 _board.Buttons[(int)point.X, (int)point.Y].Content = _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content;
                                 _board.Buttons[(int)_board.CurrentPoint.X, (int)_board.CurrentPoint.Y].Content = null;
 
-
                                 if (_board.Player == ColorOfFigure.White)
                                 {
                                     tbWhite.Visibility = Visibility.Visible;
@@ -301,8 +299,8 @@ namespace Ekz_WPF
                             {
                                 //tmpFields.Fields[(int)point.X, (int)point.Y].FigurBase = null;
 
-                                 tmpFields.DoActionFigures(_board.listRules, point, ColorOfFigure.Black);
-                                 tmpFields.blackKing.IsChess = false;
+                                tmpFields.DoActionFigures(_board.listRules, point, ColorOfFigure.Black);
+                                tmpFields.blackKing.IsChess = false;
 
                                 _board = tmpFields;
                                 _board.Player = ColorOfFigure.White;
